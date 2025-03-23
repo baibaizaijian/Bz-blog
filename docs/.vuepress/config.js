@@ -9,6 +9,7 @@ export default defineUserConfig({
   lang: "zh-CN",
   // 使用环境变量配置路径
   // base: process.env.BASE_PATH || "./",
+  base: "./",
   title: "BZZ的记录博客",
   description: "这是我的第一个博客站点",
 
