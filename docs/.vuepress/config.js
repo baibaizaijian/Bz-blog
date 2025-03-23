@@ -9,7 +9,7 @@ export default defineUserConfig({
   lang: "zh-CN",
   // 使用环境变量配置路径
   // base: process.env.BASE_PATH || "./",
-  base: "./",
+  base: "/Bz-blog/",
   title: "BZZ的记录博客",
   description: "这是我的第一个博客站点",
 
@@ -19,8 +19,7 @@ export default defineUserConfig({
       "/",
       {
         text: "js",
-        // 修正文件名大小写（确保实际文件名为 main.md）
-        link: "/main.md" 
+        link: "/mian.md" 
       },
     ],
   }),
