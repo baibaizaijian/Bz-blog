@@ -7,20 +7,19 @@ import { searchPlugin } from "@vuepress/plugin-search";
 
 export default defineUserConfig({
   lang: "zh-CN",
-  // 根据实际仓库名称修改 <REPO>
-  base: "./",
+  // 使用环境变量配置路径
+  base: process.env.BASE_PATH || "./",
   title: "BZZ的记录博客",
   description: "这是我的第一个博客站点",
 
   theme: defaultTheme({
     logo: "https://vuejs.press/images/hero.png",
-
     navbar: [
       "/",
-
       {
         text: "js",
-        link: "/mian.md",
+        // 修正文件名大小写（确保实际文件名为 main.md）
+        link: "/main.md" 
       },
     ],
   }),
