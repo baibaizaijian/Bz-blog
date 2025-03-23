@@ -3,11 +3,12 @@ import { defaultTheme } from "@vuepress/theme-default";
 import { defineUserConfig } from "vuepress";
 import { viteBundler } from "@vuepress/bundler-vite";
 // 在 imports 部分添加
-import { searchPlugin } from '@vuepress/plugin-search'
+import { searchPlugin } from "@vuepress/plugin-search";
 
 export default defineUserConfig({
   lang: "zh-CN",
-
+  // 根据实际仓库名称修改 <REPO>
+  base: "./",
   title: "BZZ的记录博客",
   description: "这是我的第一个博客站点",
 
