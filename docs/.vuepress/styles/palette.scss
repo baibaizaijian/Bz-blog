@@ -1,0 +1,17 @@
+:root {
+  --search-c-bg: var(--vp-c-bg);
+  --search-c-accent: var(--vp-c-accent);
+  --search-c-text: var(--vp-c-text);
+  --search-c-border: var(--vp-c-gutter);
+  --search-c-item-text: var(--vp-c-text-subtle);
+  --search-c-item-focus: var(--vp-c-bg-alt);
+  --search-input-width: 12rem;
+  --search-result-width: 16rem;
+
+}
+// 覆盖搜索图标
+.search-box input {
+  // 调整输入框内边距
+  padding-left: 2rem !important;
+  padding-right: 1rem !important;
+}
