@@ -19,7 +19,7 @@ export default defineUserConfig({
       "/",
       {
         text: "js",
-        link: "/mian.md" 
+        link: "/js面试题.md" 
       },
     ],
   }),
