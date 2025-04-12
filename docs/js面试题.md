@@ -1,4 +1,4 @@
-# 1.js基本数据类型有哪些及它们的区别
+## 1.js基本数据类型有哪些及它们的区别
 
 JavaScript共有八种数据类型，分别是 Undefined、Null、Boolean、Number、String、Object、Symbol、BigInt。
 
@@ -40,7 +40,7 @@ JavaScript 中的数据类型分为两大类：
 | **类型检测** | `typeof`                               | `typeof` 对对象统一返回 `"object"`，可以结合 `Array.isArray()`、`instanceof` 判断更具体类型 |
 | **比较方式** | `===` 比较值                           | `===` 比较引用地址                                           |
 
-# 2.数据类型检测的方式有哪些？
+## 2.数据类型检测的方式有哪些？
 
 1. `typeof`
 
@@ -107,7 +107,7 @@ getType(null);     // "Null"
 getType(123);      // "Number"
 ```
 
-# 3.数组的常用方法有哪些？
+## 3.数组的常用方法有哪些？
 
 JavaScript 中数组的常用方法可以分为以下几类：
 
@@ -186,7 +186,7 @@ JavaScript 中数组的常用方法可以分为以下几类：
 
 ---
 
-# 4.对象的常用方法有哪些？
+## 4.对象的常用方法有哪些？
 
 
 
@@ -255,7 +255,7 @@ JavaScript 中对象的常用方法主要分为以下几类：
 | ----------------- | ----------------------------------------- | ----------------------------- |
 | `Object.is(a, b)` | 类似 `===`，但能正确比较 `NaN` 和 `-0/+0` | `Object.is(NaN, NaN) // true` |
 
-# 5.字符串的常用方法有哪些？
+## 5.字符串的常用方法有哪些？
 
 JavaScript 中字符串（String）的常用方法主要分为以下几类：
 
@@ -334,7 +334,7 @@ str.replace('World', 'JS');    // ' Hello, JS! '
 
 
 
-# 6.简述 `this`
+## 6.简述 `this`
 
 
 
@@ -382,7 +382,7 @@ const arrowFn = () => {
 arrowFn(); // this 与定义时所在作用域一致
 ```
 
-# 7.bind、call、apply 区别？如何实现一个bind?
+## 7.bind、call、apply 区别？如何实现一个bind?
 
 一、作用
 
@@ -527,7 +527,7 @@ fn.bind(obj,1)(2)
 
 整体实现代码如下：
 
-```
+```js
 Function.prototype.myBind = function (context) {
     // 判断调用对象是否为函数
     if (typeof this !== "function") {
@@ -545,3 +545,204 @@ Function.prototype.myBind = function (context) {
     }
 }
 ```
+
+## 8.说说你对闭包的理解？闭包使用场景？
+
+### 一、闭包的定义
+
+**闭包是指：让你可以在一个内层函数中访问到其外层函数的作用域。**
+
+简单来说：  
+> **函数内部引用了函数外部的变量，并在函数外部仍然能访问这个函数，这就是闭包。**
+
+在 `JavaScript `中，每当创建一个函数，闭包就会在函数创建的同时被创建出来，作为函数内部与外部连接起来的一座桥梁
+
+下面给出一个简单的例子
+
+```js
+function init() {
+    var name = "bzz"; // name 是一个被 init 创建的局部变量
+    function displayName() { // displayName() 是内部函数，一个闭包
+        alert(name); // 使用了父函数中声明的变量
+    }
+    displayName();
+}
+init();
+```
+
+
+
+`displayName()` 没有自己的局部变量。然而，由于闭包的特性，它可以访问到外部函数的变量
+
+---
+
+### 二、闭包的特性
+
+- 闭包会**捕获其创建时的作用域链**。
+- 被引用的外部变量不会被垃圾回收，直到闭包失效。
+- 可以模拟私有变量。
+
+---
+
+### 三、闭包的经典示例
+
+### 柯里化函数
+
+柯里化的目的在于避免频繁调用具有相同参数函数的同时，又能够轻松的重用
+
+```
+// 假设我们有一个求长方形面积的函数
+function getArea(width, height) {
+    return width * height
+}
+// 如果我们碰到的长方形的宽老是10
+const area1 = getArea(10, 20)
+const area2 = getArea(10, 30)
+const area3 = getArea(10, 40)
+
+// 我们可以使用闭包柯里化这个计算面积的函数
+function getArea(width) {
+    return height => {
+        return width * height
+    }
+}
+
+const getTenWidthArea = getArea(10)
+// 之后碰到宽度为10的长方形就可以这样计算面积
+const area1 = getTenWidthArea(20)
+
+// 而且如果遇到宽度偶尔变化也可以轻松复用
+const getTwentyWidthArea = getArea(20)
+```
+
+
+
+### 使用闭包模拟私有方法
+
+在`JavaScript`中，没有支持声明私有变量，但我们可以使用闭包来模拟私有方法
+
+下面举个例子：
+
+```js
+var Counter = (function() {
+  var privateCounter = 0;
+  function changeBy(val) {
+    privateCounter += val;
+  }
+  return {
+    increment: function() {
+      changeBy(1);
+    },
+    decrement: function() {
+      changeBy(-1);
+    },
+    value: function() {
+      return privateCounter;
+    }
+  }
+})();
+
+var Counter1 = makeCounter();
+var Counter2 = makeCounter();
+console.log(Counter1.value()); /* logs 0 */
+Counter1.increment();
+Counter1.increment();
+console.log(Counter1.value()); /* logs 2 */
+Counter1.decrement();
+console.log(Counter1.value()); /* logs 1 */
+console.log(Counter2.value()); /* logs 0 */
+```
+
+
+
+上述通过使用闭包来定义公共函数，并令其可以访问私有函数和变量，这种方式也叫模块方式
+
+两个计数器 `Counter1` 和 `Counter2` 是维护它们各自的独立性的，每次调用其中一个计数器时，通过改变这个变量的值，会改变这个闭包的词法环境，不会影响另一个闭包中的变量
+
+### 四、闭包的常见使用场景
+
+| 场景                   | 示例                               |
+| ---------------------- | ---------------------------------- |
+| ✅ 封装私有变量         | 利用闭包模拟 `private` 成员        |
+| ✅ 工厂函数             | 返回具有特定作用域的函数           |
+| ✅ 柯里化函数           | 将多个参数的函数拆解执行           |
+| ✅ 事件监听器           | 在回调中持久保存外部状态           |
+| ✅ 异步逻辑中的数据保留 | `setTimeout`、`Promise` 等异步逻辑 |
+| ✅ 防抖节流             | 保存定时器 ID、记录时间戳等        |
+
+### 五、闭包的优缺点
+
+✅ 优点：
+
+- 能保存函数运行时的上下文；
+- 可以封装数据，避免全局变量污染；
+- 有助于构建高阶函数、函数式编程等模式。
+
+⚠️ 缺点：
+
+- 占用内存，容易导致**内存泄漏**；
+- 滥用可能导致调试困难；
+- 不易理解（容易写出 bug）。
+
+# 9.执行上下文和执行栈是什么？
+
+一、执行上下文（Execution Context）
+
+执行上下文是 JavaScript 代码运行的环境。每当 JavaScript 代码在运行时，都是在某个执行上下文中运行的。
+
+执行上下文的三种类型：
+
+1. **全局执行上下文（Global Execution Context）**
+   - 页面首次加载时创建。
+   - 只有一个，浏览器中即 `window`。
+   - 会创建一个全局对象（`window`），并将 `this` 指向它。
+
+2. **函数执行上下文（Function Execution Context）**
+   - 每次调用函数时都会创建一个新的上下文。
+   - 作用域链、函数参数、局部变量都在其中。
+
+3. **`eval` 执行上下文**
+   - 执行在eval函数中的代码会有属于他自己的执行上下文不常用，也不推荐使用。
+
+---
+
+二、执行上下文的生命周期
+
+1. **创建阶段（Creation Phase）**
+   - 创建变量对象（Variable Object，VO）
+   - 建立作用域链（Scope Chain）
+   - 确定 `this` 的值
+
+2. **执行阶段（Execution Phase）**
+   - 执行代码，变量赋值、函数引用等实际操作
+
+---
+
+三、执行栈（Execution Stack）也叫调用栈（Call Stack）
+
+执行栈是一种**后进先出（LIFO）**的数据结构，用来管理执行上下文。
+
+- 当 JS 程序开始运行时，会创建全局执行上下文并压入执行栈。
+- 每当一个函数被调用时，会创建该函数的执行上下文，并压入栈顶。
+- 函数执行完毕后，其上下文会从栈顶移除（弹出）。
+- 程序运行结束，栈清空。
+
+---
+
+四、执行栈示意图
+
+```js
+function a() {
+  console.log('a');
+  b();
+}
+function b() {
+  console.log('b');
+}
+a();
+```
+
+五、总结
+
+- **执行上下文**是代码运行的环境，包含变量、作用域链和 `this`。
+- **执行栈**决定了代码的执行顺序，通过后进先出的机制管理上下文。
