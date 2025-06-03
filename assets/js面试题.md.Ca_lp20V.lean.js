@@ -1,0 +1,1 @@
+import{_ as i,c as t,o as a,ae as n}from"./chunks/framework.BtEkjhVd.js";const c=JSON.parse('{"title":"9.执行上下文和执行栈是什么？","description":"","frontmatter":{},"headers":[],"relativePath":"js面试题.md","filePath":"js面试题.md"}'),e={name:"js面试题.md"};function d(l,s,p,h,o,k){return a(),t("div",null,s[0]||(s[0]=[n("",178)]))}const g=i(e,[["render",d]]);export{c as __pageData,g as default};
