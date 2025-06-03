@@ -3,7 +3,7 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: "Bz Blog",
   description: "A Personal Blog",
-  base: '/',
+  base: "/Bz-blog/",
   themeConfig: {
     // 导航栏
     nav: [
