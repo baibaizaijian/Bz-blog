@@ -1,1 +1,0 @@
-import{_ as e,c as t,o as i,ae as l}from"./chunks/framework.CNI96c_c.js";const _=JSON.parse('{"title":"关于我","description":"","frontmatter":{},"headers":[],"relativePath":"about.md","filePath":"about.md"}'),r={name:"about.md"};function o(n,a,s,d,u,h){return i(),t("div",null,a[0]||(a[0]=[l("",10)]))}const p=e(r,[["render",o]]);export{_ as __pageData,p as default};
