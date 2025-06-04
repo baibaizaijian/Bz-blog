@@ -5,9 +5,9 @@ package-lock.json
 yarn.lock
 
 # VuePress 临时文件
-.vuepress/.temp/
+.vuepress/temp/
 # VuePress 缓存目录
-.vuepress/.cache/
+.vuepress/cache/
 # VuePress 构建目录
 .vuepress/dist/
 
