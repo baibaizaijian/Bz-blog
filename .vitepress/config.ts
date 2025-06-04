@@ -4,6 +4,8 @@ export default defineConfig({
   title: "Bz Blog",
   description: "A Personal Blog",
   base: "/Bz-blog/",
+  srcDir: 'docs',
+  lastUpdated: true,
   themeConfig: {
     // 导航栏
     nav: [
@@ -31,6 +33,13 @@ export default defineConfig({
     footer: {
       message: 'Released under the MIT License.',
       copyright: 'Copyright © 2024-present'
+    },
+    lastUpdated:{
+      text: '更新时间',
+      formatOptions: {
+        dateStyle: 'medium',
+        timeStyle: 'short',
+      },
     }
   }
 }) 
