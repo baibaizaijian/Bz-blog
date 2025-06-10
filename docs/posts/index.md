@@ -1,7 +1,19 @@
-# 文章列表
+---
+hello: world
+---
 
-这里是所有博客文章的列表。
+<script setup>
+import { ref } from 'vue'
+const count = ref(0)
+const increment = () => count.value++
+</script>
 
-## 最新文章
+## Markdown Content
 
-- [Hello World](/posts/hello-world) - 2024-03-21 
+The count is: {{ count }}
+
+<el-button type="primary" @click="increment">增加</el-button>
+
+<style module>
+
+</style>

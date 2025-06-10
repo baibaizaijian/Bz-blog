@@ -1,5 +1,6 @@
 import { defineConfig } from "vitepress";
 import { normalizeClass } from "vue";
+import { sidebar, nav } from './utils';
 
 export default defineConfig({
   title: "Bz Blog",
@@ -17,27 +18,17 @@ export default defineConfig({
     },
   },
   themeConfig: {
+    // https://vitepress.dev/reference/default-theme-config
     // 导航栏
-    nav: [
-      { text: "首页", link: "/" },
-      { text: "文章", link: "/posts/" },
-      { text: "关于", link: "/about" },
-    ],
+    nav: nav,
 
     // 社交链接
     socialLinks: [
-      { icon: "github", link: "https://github.com/your-github-account" },
+      { icon: "github", link: "https://github.com/your-github-account" }, // 请替换为你的 GitHub 账户链接
     ],
 
     // 侧边栏
-    sidebar: {
-      "/posts/": [
-        {
-          text: "所有文章",
-          items: [],
-        },
-      ],
-    },
+    sidebar: sidebar,
 
     // 页脚
     footer: {
@@ -50,6 +41,10 @@ export default defineConfig({
         dateStyle: "medium",
         timeStyle: "short",
       },
+    },
+    docFooter: {
+      prev: '上一页',
+      next: '下一页'
     },
     sidebarMenuLabel: "菜单",
     returnToTopLabel: "返回顶部",
