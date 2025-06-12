@@ -25,6 +25,8 @@
     "vue": "^3.4.0"
   },
   "dependencies": {
-    "element-plus": "^2.10.1"
+    "element-plus": "^2.10.1",
+    "gsap": "^3.13.0",
+    "split-type": "^0.3.4"
   }
 }
