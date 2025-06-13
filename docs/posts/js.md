@@ -14,7 +14,7 @@ JavaScript 中的数据类型分为两大类：
 | `String`    | 字符串                                  | `"hello"`, `'world'`               |
 | `Boolean`   | 布尔值                                  | `true`, `false`                    |
 | `Undefined` | 未定义，变量声明了但未赋值              | `let a; // undefined`              |
-| `Null`      | 空值，表示“无”                          | `let b = null`                     |
+| `Null`      | 空值，表示"无"                          | `let b = null`                     |
 | `Symbol`    | 唯一值，ES6 引入                        | `Symbol('desc')`                   |
 | `BigInt`    | 大整数，ES11 引入                       | `123n`, `BigInt(9007199254740991)` |
 

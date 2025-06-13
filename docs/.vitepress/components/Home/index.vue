@@ -91,7 +91,7 @@
             <div
               class="books__hitbox"
               data-book-index="1"
-              data-book-title="Simple Living"
+              data-book-title="三号"
             ></div>
           </div>
         </div>
@@ -117,7 +117,7 @@
             <div
               class="books__hitbox"
               data-book-index="2"
-              data-book-title="Ten Principles for Good Design"
+              data-book-title="二号"
             ></div>
           </div>
         </div>
@@ -219,20 +219,20 @@ onMounted(() => {
   const body = document.body
 
   // 获取保存的主题设置
-  const savedTheme = localStorage.getItem('theme')
-  // 如果本地存储中保存了主题设置
-  if (savedTheme === 'dark') {
-    // 设置为深色模式
-    body.classList.add('dark-mode')
-  } else {
-    // 否则，默认设置为浅色模式（移除深色模式类）
-    body.classList.remove('dark-mode')
-  }
+  // const savedTheme = localStorage.getItem('theme')
+  // // 如果本地存储中保存了主题设置
+  // if (savedTheme === 'dark') {
+  //   // 设置为深色模式
+  //   body.classList.add('dark-mode')
+  // } else {
+  //   // 否则，默认设置为浅色模式（移除深色模式类）
+  //   body.classList.remove('dark-mode')
+  // }
 
-  themeToggle?.addEventListener('click', () => {
-    body.classList.toggle('dark-mode')
-    localStorage.setItem('theme', body.classList.contains('dark-mode') ? 'dark' : 'light')
-  })
+  // themeToggle?.addEventListener('click', () => {
+  //   body.classList.toggle('dark-mode')
+  //   localStorage.setItem('theme', body.classList.contains('dark-mode') ? 'dark' : 'light')
+  // })
 
   // 书本解释
   const overlay = document.querySelector('.book-title-overlay')
@@ -245,6 +245,7 @@ onMounted(() => {
   books.forEach((book, index) => {
     // 获取书籍的点击区域
     const hitbox = book.querySelector('.books__hitbox')
+    if (!hitbox) return
     // 获取书籍封面图片元素
     const bookImage = book.querySelector('.books__image')
     // 获取书籍效果元素
@@ -253,9 +254,9 @@ onMounted(() => {
     const pages = book.querySelectorAll('.books__page')
     // 获取书籍光照效果元素
     const bookLight = book.querySelector('.books__light')
-    // 获取书籍标题
+    // 书籍标题
     const bookTitle = hitbox.getAttribute('data-book-title')
-    // 获取书籍索引
+    // 书籍索引
     const bookIndex = hitbox.getAttribute('data-book-index')
     // 计算书籍阴影的索引
     let shadowIndex = index >= 1 ? index + 1 : index
@@ -429,7 +430,7 @@ onMounted(() => {
 :root {
   /* Light mode variables */
   --bg-color: #ffffff; /* 背景颜色 */
-  --text-color: #333333; /* 文本颜色 */
+  --text-color: #f5f5f5; /* 文本颜色 */
   --title-color: #000000; /* 标题颜色 */
   --overlay-text-color: rgba(0, 0, 0, 0.05); /* 覆盖层文本颜色 */
   --shelf-bg: linear-gradient(to bottom, #f0f0f0, #e0e0e0); /* 书架背景 */
@@ -446,25 +447,6 @@ onMounted(() => {
   --toggle-dot: #333333; /* 主题切换点颜色 */
 }
 
-.dark-mode {
-  /* Dark mode variables */
-  --bg-color: #121212; /* 背景颜色 */
-  --text-color: #e0e0e0; /* 文本颜色 */
-  --title-color: #ffffff; /* 标题颜色 */
-  --overlay-text-color: rgba(255, 255, 255, 0.05); /* 覆盖层文本颜色 */
-  --shelf-bg: linear-gradient(to bottom, #2a2a2a, #1a1a1a); /* 书架背景 */
-  --shelf-edge-top: rgba(255, 255, 255, 0.03); /* Lighter in dark mode */ /* 书架顶部边缘颜色 */
-  --shelf-edge-bottom: rgba(0, 0, 0, 0.3); /* 书架底部边缘颜色 */
-  --book-back-cover: #ffffff; /* Changed to white in dark mode */ /* 书籍封底颜色 */
-  --book-page: #ffffff; /* Changed to white in dark mode */ /* 书籍页面颜色 */
-  --book-page-border: rgba(0, 0, 0, 0.2); /* 书籍页面边框颜色 */
-  --book-shadow: rgba(0, 0, 0, 0.3); /* 书籍阴影颜色 */
-  --book-shadow-strong: rgba(0, 0, 0, 0.5); /* 书籍强阴影颜色 */
-  --side-book-bg: linear-gradient(to right, #222 0%, #444 50%, #222 100%); /* 侧边书籍背景 */
-  --side-book-text: #ffffff; /* 侧边书籍文本颜色 */
-  --side-book-decoration: rgba(255, 255, 255, 0.2); /* 侧边书籍装饰颜色 */
-  --toggle-dot: #ffffff; /* 主题切换点颜色 */
-}
 
 @font-face {
   font-family: "Cabinet Grotesk";
@@ -524,21 +506,22 @@ body {
   justify-content: center;
   align-items: center;
   z-index: -1;
-  opacity: 1; /* Visible by default */ /* 默认可见 */
-  transition: opacity 0.3s ease; /* 透明度过渡效果 */
+  opacity: 1;
+  transition: opacity 0.1s ease;
   pointer-events: none;
+  color:  #f5f5f5;; /* 添加独立的颜色变量 */
 }
 
 .book-title-text {
   font-family: "Cabinet Grotesk", sans-serif;
   font-weight: 800;
   font-size: 20rem;
-  color: var(--overlay-text-color); /* 覆盖层文本颜色 */
+  color:  #f5f5f5;;
   text-transform: uppercase;
   text-align: center;
   line-height: 1;
   max-width: 90vw;
-  transition: color 0.5s ease; /* 颜色过渡效果 */
+  transition: color 0.5s ease;
 }
 
 /* Shelf container to manage stacking context */
@@ -787,7 +770,7 @@ body {
   transform: translateX(-50%);
   width: 80%;
   height: 1px;
-  background-color: var(--side-book-decoration);
+  background-color: rgba(255, 255, 255, 0.3);
   transition: background-color 0.5s ease;
 }
 
