@@ -35,6 +35,7 @@ export const sidebar: DefaultTheme.Sidebar = {
       collapsed: false,
       items: [
         { text: 'JS 面试题', link: '/posts/js' },
+        { text: 'SVG', link: '/posts/svg' },
       ]
     }
   ]

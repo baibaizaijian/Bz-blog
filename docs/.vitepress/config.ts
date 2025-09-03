@@ -24,7 +24,7 @@ export default defineConfig({
 
     // 社交链接
     socialLinks: [
-      { icon: "github", link: "https://github.com/your-github-account" }, // 请替换为你的 GitHub 账户链接
+      { icon: "github", link: "https://github.com/baibaizaijian" }, 
     ],
 
     // 侧边栏
