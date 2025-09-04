@@ -4,7 +4,10 @@
       <div class="score">分数: {{ score.value }}</div>
       <button class="reset-btn" @click="resetGame">重新开始</button>
     </div>
-    <div class="board">
+    <div class="board" 
+         @touchstart="handleTouchStart" 
+         @touchmove="handleTouchMove" 
+         @touchend="handleTouchEnd">
       <div v-for="(row, rIndex) in board" :key="rIndex" class="row">
         <div v-for="(cell, cIndex) in row" :key="cIndex" 
              class="cell" 
@@ -28,6 +31,12 @@ const board = reactive(Array(4).fill(0).map(() => Array(4).fill(0)))
 const score = reactive({ value: 0 })
 /** 记录已合并的单元格位置，用于添加合并动画 */
 const mergedCells = reactive({})
+
+// 触摸事件相关变量
+const touchStartX = ref(0)
+const touchStartY = ref(0)
+const touchEndX = ref(0)
+const touchEndY = ref(0)
 
 /**
  * 重置游戏
@@ -245,6 +254,72 @@ function handleKey(e) {
 }
 
 /**
+ * 处理触摸开始事件
+ * @param {TouchEvent} e - 触摸事件对象
+ */
+function handleTouchStart(e) {
+  e.preventDefault() // 阻止默认行为（如页面滚动）
+  touchStartX.value = e.touches[0].clientX
+  touchStartY.value = e.touches[0].clientY
+}
+
+/**
+ * 处理触摸移动事件
+ * @param {TouchEvent} e - 触摸事件对象
+ */
+function handleTouchMove(e) {
+  e.preventDefault() // 阻止默认行为（如页面滚动）
+}
+
+/**
+ * 处理触摸结束事件
+ * @param {TouchEvent} e - 触摸事件对象
+ */
+function handleTouchEnd(e) {
+  e.preventDefault() // 阻止默认行为
+  
+  touchEndX.value = e.changedTouches[0].clientX
+  touchEndY.value = e.changedTouches[0].clientY
+  
+  // 计算水平和垂直方向的滑动距离
+  const dx = touchEndX.value - touchStartX.value
+  const dy = touchEndY.value - touchStartY.value
+  
+  // 判断滑动方向（需要有一定的最小距离才触发，这里设为30像素）
+  const minDistance = 30
+  
+  let moved = false
+  
+  // 判断主要滑动方向（水平或垂直）
+  if (Math.abs(dx) > Math.abs(dy)) {
+    // 水平方向滑动
+    if (dx > minDistance) {
+      // 向右滑动
+      moved = move('right')
+    } else if (dx < -minDistance) {
+      // 向左滑动
+      moved = move('left')
+    }
+  } else {
+    // 垂直方向滑动
+    if (dy > minDistance) {
+      // 向下滑动
+      moved = move('down')
+    } else if (dy < -minDistance) {
+      // 向上滑动
+      moved = move('up')
+    }
+  }
+  
+  // 如果发生了移动
+  if (moved) {
+    addNumber() // 添加新数字
+    if (checkWin()) setTimeout(() => alert('你赢了 2048!'), 300) // 检查是否获胜
+    if (checkGameOver()) setTimeout(() => alert('游戏结束!'), 300) // 检查是否游戏结束
+  }
+}
+
+/**
  * 检查是否获胜（出现2048）
  * @returns {boolean} - 是否获胜
  */
@@ -290,6 +365,7 @@ onUnmounted(() => {
   width: 400px; 
   margin: 0 auto;
   padding: 0 10px;
+  touch-action: none; /* 防止触摸事件引起页面滚动 */
 }
 
 .header {
@@ -331,6 +407,8 @@ onUnmounted(() => {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   width: 380px; /* 确保宽度正确 */
   box-sizing: border-box; /* 确保padding不会增加总宽度 */
+  touch-action: none; /* 防止触摸事件引起页面滚动 */
+  user-select: none; /* 防止文本选择 */
 }
 
 .row { 
@@ -419,34 +497,53 @@ onUnmounted(() => {
 }
 .cell[data-num="128"] .cell-content { 
   color: #f9f6f2; 
-  font-size: 20px; 
 }
 .cell[data-num="256"] { 
   background: #edcc61; 
 }
 .cell[data-num="256"] .cell-content { 
   color: #f9f6f2; 
-  font-size: 20px; 
 }
 .cell[data-num="512"] { 
   background: #edc850; 
 }
 .cell[data-num="512"] .cell-content { 
   color: #f9f6f2; 
-  font-size: 20px; 
 }
 .cell[data-num="1024"] { 
   background: #edc53f; 
 }
 .cell[data-num="1024"] .cell-content { 
   color: #f9f6f2; 
-  font-size: 16px; 
 }
 .cell[data-num="2048"] { 
   background: #edc22e; 
 }
 .cell[data-num="2048"] .cell-content { 
   color: #f9f6f2; 
-  font-size: 16px; 
+}
+
+/* 移动端适配 */
+@media (max-width: 500px) {
+  #game {
+    width: 100%;
+    padding: 0 5px;
+  }
+  
+  .board {
+    width: 100%;
+    max-width: 380px;
+  }
+  
+  .cell {
+    width: 100%;
+    height: 0;
+    padding-bottom: 100%; /* 保持正方形 */
+  }
+  
+  .header {
+    flex-direction: column;
+    gap: 10px;
+  }
 }
 </style>
