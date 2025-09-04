@@ -26,7 +26,7 @@
 import { reactive, ref, onMounted, onUnmounted } from 'vue'
 
 /** 生成4*4 二维数组，初始值都为0 */
-const board = reactive(Array(4).fill(0).map(() => Array(4).fill(0)))
+const board = reactive(Array(5).fill(0).map(() => Array(5).fill(0)))
 /** 游戏分数，使用reactive包装便于修改 */
 const score = reactive({ value: 0 })
 /** 记录已合并的单元格位置，用于添加合并动画 */
@@ -44,8 +44,8 @@ const touchEndY = ref(0)
  */
 function resetGame() {
   // 清空棋盘
-  for (let r = 0; r < 4; r++) {
-    for (let c = 0; c < 4; c++) {
+  for (let r = 0; r < 5; r++) {
+    for (let c = 0; c < 5; c++) {
       board[r][c] = 0
     }
   }
@@ -108,7 +108,7 @@ function slideAndMerge(row) {
   arr = arr.filter(v => v !== 0)
   
   // 在数组末尾补充0，确保长度为4
-  while (arr.length < 4) arr.push(0)
+  while (arr.length < 5) arr.push(0)
   
   return { row: arr, merged }
 }
@@ -211,8 +211,8 @@ function move(direction) {
   }
 
   // 检查是否有移动发生
-  for (let r = 0; r < 4; r++) {
-    for (let c = 0; c < 4; c++) {
+  for (let r = 0; r < 5; r++) {
+    for (let c = 0; c < 5; c++) {
       if (b[r][c] !== board[r][c]) moved = true
       board[r][c] = b[r][c] // 更新棋盘
     }
@@ -362,7 +362,7 @@ onUnmounted(() => {
 
 <style scoped>
 #game { 
-  width: 400px; 
+  width: 500px; 
   margin: 0 auto;
   padding: 0 10px;
   touch-action: none; /* 防止触摸事件引起页面滚动 */
@@ -399,13 +399,13 @@ onUnmounted(() => {
 
 .board { 
   display: grid; 
-  grid-template-rows: repeat(4, 1fr); 
+  grid-template-rows: repeat(5, 1fr); /* 修改为5行 */ 
   gap: 10px; 
   background: #bbada0; 
   padding: 10px; 
   border-radius: 10px; 
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  width: 380px; /* 确保宽度正确 */
+  width: 460px; /* 调整为适合5×5棋盘的宽度 */
   box-sizing: border-box; /* 确保padding不会增加总宽度 */
   touch-action: none; /* 防止触摸事件引起页面滚动 */
   user-select: none; /* 防止文本选择 */
@@ -413,7 +413,7 @@ onUnmounted(() => {
 
 .row { 
   display: grid; 
-  grid-template-columns: repeat(4, 1fr); 
+  grid-template-columns: repeat(5, 1fr); /* 修改为5列 */ 
   gap: 10px; 
 }
 
