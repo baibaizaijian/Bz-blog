@@ -1,5 +1,6 @@
 <template>
-  <div class="theme-toggle" id="theme-toggle">切换</div> <!-- 主题切换按钮 -->
+  <div class="theme-toggle" id="theme-toggle">切换</div>
+  <!-- 主题切换按钮 -->
 
   <svg
     style="position: absolute; width: 100%; height: 100%; z-index: 0"
@@ -21,7 +22,7 @@
   </svg>
 
   <div class="book-title-overlay">
-    <div class="book-title-text">好久不见</div>
+    <div class="book-title-text">Flowers for Algernon</div>
   </div>
 
   <div class="shelf-container">
@@ -47,7 +48,7 @@
             <div class="books__image">
               <img
                 src="https://covers.shakespeareandcompany.com/97818386/9781838661533.jpg"
-                alt="Dieter Rams: The Complete Works"
+                alt="Flowers for Algernon"
               />
               <div class="books__effect"></div>
               <div class="books__light"></div>
@@ -55,7 +56,7 @@
             <div
               class="books__hitbox"
               data-book-index="0"
-              data-book-title="一号"
+              data-book-title="阿尔及农"
             ></div>
           </div>
         </div>
@@ -64,9 +65,9 @@
       <div
         class="side-book"
         data-book-index="side"
-        data-book-title="Design Systems"
+        data-book-title="Progress Report"
       >
-        <div class="side-book__title">二号</div>
+        <div class="side-book__title">REPORT</div>
         <div class="side-book__decoration"></div>
         <div class="side-book__decoration"></div>
       </div>
@@ -83,7 +84,7 @@
             <div class="books__image">
               <img
                 src="https://covers.shakespeareandcompany.com/97802413/9780241371831.jpg"
-                alt="Zen: The Art of Simple Living by Shunmyo Masuno"
+                alt="Charlie Gordon"
               />
               <div class="books__effect"></div>
               <div class="books__light"></div>
@@ -91,7 +92,7 @@
             <div
               class="books__hitbox"
               data-book-index="1"
-              data-book-title="三号"
+              data-book-title="查理·高登"
             ></div>
           </div>
         </div>
@@ -109,7 +110,7 @@
             <div class="books__image">
               <img
                 src="https://covers.shakespeareandcompany.com/97837913/9783791387321.jpg"
-                alt="Dieter Rams: Ten Principles for Good Design"
+                alt="Flowers for Algernon"
               />
               <div class="books__effect"></div>
               <div class="books__light"></div>
@@ -117,7 +118,7 @@
             <div
               class="books__hitbox"
               data-book-index="2"
-              data-book-title="二号"
+              data-book-title="献给阿尔及农"
             ></div>
           </div>
         </div>
@@ -126,34 +127,36 @@
 
     <div class="book-descriptions">
       <div class="book-description" data-book-index="0">
-        <h3>好久不见</h3>
-        <div class="author">再见</div>
+        <h3>阿尔及农</h3>
+        <div class="author">丹尼尔·凯斯</div>
         <div class="lines-animation">
-          <p>12312312</p>
+          <p>如果你有机会，请在后院阿尔及农的坟墓上放一束花。</p>
         </div>
       </div>
 
       <div class="book-description" data-book-index="side">
-        <h3>二号</h3>
-        <div class="author">无敌</div>
+        <h3>进步报告</h3>
+        <div class="author">查理·高登</div>
         <div class="lines-animation">
-          <p>8888888</p>
+          <p>
+            我不知道哪种情况更糟：是不知道自己是谁而快乐，还是成为自己想成为的人却感到孤独。
+          </p>
         </div>
       </div>
 
       <div class="book-description" data-book-index="1">
-        <h3>三号</h3>
-        <div class="author">哈哈哈</div>
+        <h3>查理·高登</h3>
+        <div class="author">丹尼尔·凯斯</div>
         <div class="lines-animation">
-          <p>984989</p>
+          <p>智慧是人类最伟大的天赋之一。但追求知识往往会驱逐对爱的追求。</p>
         </div>
       </div>
 
       <div class="book-description active" data-book-index="2">
-        <h3>飞天</h3>
-        <div class="author">无敌</div>
+        <h3>献给阿尔及农</h3>
+        <div class="author">丹尼尔·凯斯</div>
         <div class="lines-animation">
-          <p>阿加莎丢</p>
+          <p>世上没有好朋友或坏朋友之分；只有朋友，那些你想与之在一起的人。</p>
         </div>
       </div>
     </div>
@@ -161,20 +164,20 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
 import gsap from 'gsap'
 import SplitType from 'split-type'
+import { onMounted, ref } from 'vue'
 
 const activeBookIndex = ref<number | string>(2)
 let activeBookTimeline: gsap.core.Timeline | null = null
 const bookTimelines: gsap.core.Timeline[] = []
 
 // 更新书籍描述
-const updateDescription = (bookIndex) => {
+const updateDescription = bookIndex => {
   // 获取所有书籍描述元素
   const descriptions = document.querySelectorAll('.book-description')
   // 遍历所有描述
-  descriptions.forEach((desc) => {
+  descriptions.forEach(desc => {
     // 获取描述对应的书籍索引
     const descIndex = desc.getAttribute('data-book-index')
     // 如果描述的索引与当前激活的书籍索引不匹配，并且该描述当前是激活状态
@@ -187,13 +190,15 @@ const updateDescription = (bookIndex) => {
         opacity: 0,
         duration: 0.4,
         ease: 'power1.in',
-        stagger: 0.03
+        stagger: 0.03,
       })
     }
   })
 
   // 获取当前激活书籍的描述元素
-  const activeDescription = document.querySelector(`.book-description[data-book-index="${bookIndex}"]`)
+  const activeDescription = document.querySelector(
+    `.book-description[data-book-index="${bookIndex}"]`
+  )
   // 如果激活描述存在
   if (activeDescription) {
     // 添加激活类
@@ -207,7 +212,7 @@ const updateDescription = (bookIndex) => {
         opacity: 1,
         duration: 0.7,
         stagger: 0.08,
-        ease: 'power1.out'
+        ease: 'power1.out',
       }
     )
   }
@@ -261,11 +266,13 @@ onMounted(() => {
     // 计算书籍阴影的索引
     let shadowIndex = index >= 1 ? index + 1 : index
     // 获取书籍阴影元素
-    const bookShadow = document.querySelectorAll('.book-shadow__item')[shadowIndex]
+    const bookShadow =
+      document.querySelectorAll('.book-shadow__item')[shadowIndex]
 
     // 设置书籍图片初始阴影样式
     gsap.set(bookImage, {
-      boxShadow: 'var(--book-shadow) 10px 5px 20px, var(--book-shadow) 20px 0px 30px'
+      boxShadow:
+        'var(--book-shadow) 10px 5px 20px, var(--book-shadow) 20px 0px 30px',
     })
     // 设置书籍光照效果初始透明度
     gsap.set(bookLight, { opacity: 0.1 })
@@ -273,13 +280,21 @@ onMounted(() => {
     gsap.set(pages, { x: 0 })
 
     // 创建书籍悬停进入动画时间线
-    const hoverIn = gsap.timeline({ paused: true, defaults: { duration: 0.7, ease: 'power2.out' } })
+    const hoverIn = gsap.timeline({
+      paused: true,
+      defaults: { duration: 0.7, ease: 'power2.out' },
+    })
     // 动画：书籍图片位移、缩放和阴影变化
-    hoverIn.to(bookImage, {
-      translateX: -10,
-      scaleX: 0.96,
-      boxShadow: 'var(--book-shadow-strong) 20px 5px 20px, var(--book-shadow) 30px 0px 30px'
-    }, 0)
+    hoverIn.to(
+      bookImage,
+      {
+        translateX: -10,
+        scaleX: 0.96,
+        boxShadow:
+          'var(--book-shadow-strong) 20px 5px 20px, var(--book-shadow) 30px 0px 30px',
+      },
+      0
+    )
     // 动画：书籍阴影宽度和透明度变化
     hoverIn.to(bookShadow, { width: 130, opacity: 0.8 }, 0)
     // 动画：书籍效果边距变化
@@ -299,7 +314,11 @@ onMounted(() => {
     // 添加鼠标进入事件监听器
     hitbox.addEventListener('mouseenter', () => {
       // 如果当前有激活的书籍且不是当前书籍，则反转其动画
-      if (activeBookIndex.value !== null && activeBookIndex.value !== index && activeBookTimeline) {
+      if (
+        activeBookIndex.value !== null &&
+        activeBookIndex.value !== index &&
+        activeBookTimeline
+      ) {
         activeBookTimeline.reverse()
       }
       // 设置当前激活书籍的索引
@@ -309,7 +328,7 @@ onMounted(() => {
       // 播放当前书籍的动画
       hoverIn.play()
       // 更新覆盖层文本为书籍标题
-      overlayText.textContent = bookTitle
+      if (overlayText) overlayText.textContent = bookTitle
       // 动画：覆盖层透明度变化
       gsap.to(overlay, { opacity: 1, duration: 0.3 })
       // 更新书籍描述
@@ -322,15 +341,24 @@ onMounted(() => {
   // 获取侧边书籍阴影元素
   const sideBookShadow = document.querySelector('.book-shadow__item.side')
   // 获取侧边书籍标题
-  const sideBookTitle = sideBook.getAttribute('data-book-title')
+  const sideBookTitle = sideBook?.getAttribute('data-book-title')
+  if (!sideBook) return
 
   // 创建侧边书籍悬停进入动画时间线
-  const sideHoverIn = gsap.timeline({ paused: true, defaults: { duration: 0.5, ease: 'power2.out' } })
+  const sideHoverIn = gsap.timeline({
+    paused: true,
+    defaults: { duration: 0.5, ease: 'power2.out' },
+  })
   // 动画：侧边书籍位移和阴影变化
-  sideHoverIn.to(sideBook, {
-    y: -5,
-    boxShadow: 'var(--book-shadow) 8px -5px 15px, var(--book-shadow) 15px 0px 20px'
-  }, 0)
+  sideHoverIn.to(
+    sideBook,
+    {
+      y: -5,
+      boxShadow:
+        'var(--book-shadow) 8px -5px 15px, var(--book-shadow) 15px 0px 20px',
+    },
+    0
+  )
   // 动画：侧边书籍阴影宽度和透明度变化
   sideHoverIn.to(sideBookShadow, { width: 35, opacity: 0.8 }, 0)
 
@@ -347,7 +375,7 @@ onMounted(() => {
     // 播放侧边书籍的动画
     sideHoverIn.play()
     // 更新覆盖层文本为侧边书籍标题
-    overlayText.textContent = sideBookTitle
+    if (overlayText && sideBookTitle) overlayText.textContent = sideBookTitle
     // 动画：覆盖层透明度变化
     gsap.to(overlay, { opacity: 1, duration: 0.3 })
     // 更新书籍描述
@@ -356,33 +384,37 @@ onMounted(() => {
 
   // 设置默认展开书籍
   const defaultBook = books[2]
-  const defaultBookTitle = defaultBook.querySelector('.books__hitbox').getAttribute('data-book-title')
+  const defaultBookHitbox = defaultBook?.querySelector('.books__hitbox')
+  const defaultBookTitle = defaultBookHitbox?.getAttribute('data-book-title')
+  if (!defaultBookHitbox || !defaultBookTitle) return
   activeBookIndex.value = 2
   activeBookTimeline = bookTimelines[2]
   bookTimelines[2].play()
-  overlayText.textContent = defaultBookTitle
+  if (overlayText) overlayText.textContent = defaultBookTitle
   gsap.to(overlay, { opacity: 1, duration: 0.3 })
   updateDescription('2')
 
   // 添加书架容器鼠标离开事件监听器
-  document.querySelector('.shelf-container').addEventListener('mouseleave', () => {
-    // 如果当前激活书籍不是默认书籍且有激活动画，则反转动画
-    if (activeBookIndex.value !== 2 && activeBookTimeline) {
-      activeBookTimeline.reverse()
-    }
-    // 重置激活书籍为默认书籍
-    activeBookIndex.value = 2
-    activeBookTimeline = bookTimelines[2]
-    bookTimelines[2].play()
-    overlayText.textContent = defaultBookTitle
-    gsap.to(overlay, { opacity: 1, duration: 0.3 })
-    updateDescription('2')
-  })
+  document
+    .querySelector('.shelf-container')
+    .addEventListener('mouseleave', () => {
+      // 如果当前激活书籍不是默认书籍且有激活动画，则反转动画
+      if (activeBookIndex.value !== 2 && activeBookTimeline) {
+        activeBookTimeline.reverse()
+      }
+      // 重置激活书籍为默认书籍
+      activeBookIndex.value = 2
+      activeBookTimeline = bookTimelines[2]
+      bookTimelines[2].play()
+      if (overlayText) overlayText.textContent = defaultBookTitle
+      gsap.to(overlay, { opacity: 1, duration: 0.3 })
+      updateDescription('2')
+    })
 
   // 初始化 SplitType
   const descriptions = document.querySelectorAll('.book-description')
   // 遍历每个书籍描述元素
-  descriptions.forEach((desc) => {
+  descriptions.forEach(desc => {
     // 获取书籍索引
     const bookIndex = desc.getAttribute('data-book-index')
     // 获取标题元素
@@ -398,7 +430,7 @@ onMounted(() => {
       new SplitType(authorElement, { types: 'lines', lineClass: 'line' })
       new SplitType(textElement, { types: 'lines', lineClass: 'line' })
       // 为每个分割后的行添加 'line-inner' span 包装内容
-      desc.querySelectorAll('.line').forEach((line) => {
+      desc.querySelectorAll('.line').forEach(line => {
         const content = line.innerHTML
         line.innerHTML = `<span class="line-inner">${content}</span>`
       })
@@ -411,18 +443,17 @@ onMounted(() => {
     if (bookIndex !== '2') {
       gsap.set(desc.querySelectorAll('.line-inner'), {
         yPercent: 100,
-        opacity: 0
+        opacity: 0,
       })
     } else {
       gsap.set(desc.querySelectorAll('.line-inner'), {
         yPercent: 0,
-        opacity: 1
+        opacity: 1,
       })
     }
   })
 })
 </script>
-
 
 <style scoped>
 /* Original idea and inspiration for the Book Cover Effect by https://codepen.io/realvjy */
@@ -441,29 +472,35 @@ onMounted(() => {
   --book-page-border: rgba(0, 0, 0, 0.2); /* 书籍页面边框颜色 */
   --book-shadow: rgba(0, 0, 0, 0.15); /* 书籍阴影颜色 */
   --book-shadow-strong: rgba(0, 0, 0, 0.35); /* 书籍强阴影颜色 */
-  --side-book-bg: linear-gradient(to right, #444 0%, #666 50%, #444 100%); /* 侧边书籍背景 */
+  --side-book-bg: linear-gradient(
+    to right,
+    #444 0%,
+    #666 50%,
+    #444 100%
+  ); /* 侧边书籍背景 */
   --side-book-text: #f0f0f0; /* 侧边书籍文本颜色 */
   --side-book-decoration: rgba(255, 255, 255, 0.3); /* 侧边书籍装饰颜色 */
   --toggle-dot: #333333; /* 主题切换点颜色 */
 }
 
-
 @font-face {
-  font-family: "Cabinet Grotesk";
+  font-family: 'Cabinet Grotesk';
   font-style: normal;
   font-weight: 800;
-  src: local("Cabinet Grotesk"),
-    url("https://fonts.cdnfonts.com/s/85514/CabinetGrotesk-Extrabold.woff")
-      format("woff");
+  src:
+    local('Cabinet Grotesk'),
+    url('https://fonts.cdnfonts.com/s/85514/CabinetGrotesk-Extrabold.woff')
+      format('woff');
 }
 
 @font-face {
-  font-family: "Cabinet Grotesk";
+  font-family: 'Cabinet Grotesk';
   font-style: normal;
   font-weight: 400;
-  src: local("Cabinet Grotesk"),
-    url("https://fonts.cdnfonts.com/s/85514/CabinetGrotesk-Medium.woff")
-      format("woff");
+  src:
+    local('Cabinet Grotesk'),
+    url('https://fonts.cdnfonts.com/s/85514/CabinetGrotesk-Medium.woff')
+      format('woff');
 }
 
 body {
@@ -475,10 +512,12 @@ body {
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  font-family: "Cabinet Grotesk", sans-serif;
+  font-family: 'Cabinet Grotesk', sans-serif;
   letter-spacing: -0.02em;
   color: var(--text-color); /* 文本颜色 */
-  transition: background-color 0.5s ease, color 0.5s ease; /* 背景和颜色过渡效果 */
+  transition:
+    background-color 0.5s ease,
+    color 0.5s ease; /* 背景和颜色过渡效果 */
 }
 
 /* Theme toggle dot */
@@ -509,14 +548,14 @@ body {
   opacity: 1;
   transition: opacity 0.1s ease;
   pointer-events: none;
-  color:  #f5f5f5;; /* 添加独立的颜色变量 */
+  color: #f5f5f5; /* 添加独立的颜色变量 */
 }
 
 .book-title-text {
-  font-family: "Cabinet Grotesk", sans-serif;
+  font-family: 'Cabinet Grotesk', sans-serif;
   font-weight: 800;
   font-size: 20rem;
-  color:  #f5f5f5;;
+  color: #f5f5f5;
   text-transform: uppercase;
   text-align: center;
   line-height: 1;
@@ -547,7 +586,8 @@ body {
   border-radius: 1px;
   z-index: 20;
   box-shadow:
-        /* Subtle top highlight */ 0px -1px 1px rgba(255, 255, 255, 0.15),
+        /* Subtle top highlight */
+    0px -1px 1px rgba(255, 255, 255, 0.15),
     /* Close shadow */ 0px 2px 3px rgba(0, 0, 0, 0.12),
     /* Medium shadow */ 0px 5px 10px rgba(0, 0, 0, 0.08),
     /* Larger shadow */ 0px 15px 20px rgba(0, 0, 0, 0.06),
@@ -555,12 +595,14 @@ body {
     /* Extra large ambient shadow */ 0px 40px 60px rgba(0, 0, 0, 0.2),
     /* Massive soft shadow for dramatic effect */ 0px 60px 80px
       rgba(0, 0, 0, 0.12);
-  transition: background 0.5s ease, box-shadow 0.5s ease;
+  transition:
+    background 0.5s ease,
+    box-shadow 0.5s ease;
 }
 
 /* Add a subtle edge to the shelf */
 .shelf:after {
-  content: "";
+  content: '';
   position: absolute;
   bottom: -1px;
   left: 0;
@@ -571,7 +613,7 @@ body {
 }
 
 .shelf:before {
-  content: "";
+  content: '';
   position: absolute;
   top: -2px;
   left: 0;
@@ -662,7 +704,9 @@ body {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
   transform-origin: right center;
   z-index: -5;
-  transition: background 0.5s ease, border-color 0.5s ease;
+  transition:
+    background 0.5s ease,
+    border-color 0.5s ease;
 }
 
 /* Front Cover Image */
@@ -671,7 +715,8 @@ body {
   position: relative;
   border-radius: 2px 6px 6px 2px;
   height: 100%;
-  box-shadow: var(--book-shadow) 10px -5px 20px,
+  box-shadow:
+    var(--book-shadow) 10px -5px 20px,
     var(--book-shadow) 20px 0px 30px;
   transform-origin: left center;
   cursor: pointer;
@@ -734,12 +779,17 @@ body {
   /* Thin width for side view */
   position: relative;
   cursor: pointer;
+  background: #555; /* Fallback color */
   background: var(--side-book-bg);
   border-radius: 2px;
-  box-shadow: var(--book-shadow) 5px -3px 10px, var(--book-shadow) 10px 0px 15px;
+  box-shadow:
+    var(--book-shadow) 5px -3px 10px,
+    var(--book-shadow) 10px 0px 15px;
   transform-origin: bottom center;
   will-change: transform, box-shadow;
-  transition: background 0.5s ease, box-shadow 0.5s ease;
+  transition:
+    background 0.5s ease,
+    box-shadow 0.5s ease;
 }
 
 .side-book__title {
@@ -828,12 +878,15 @@ body {
   width: 100%;
   opacity: 0;
   visibility: hidden;
-  font-family: "Cabinet Grotesk", sans-serif;
+  font-family: 'Cabinet Grotesk', sans-serif;
   font-weight: 400;
   font-size: 1.1rem;
   line-height: 1.5;
   color: var(--text-color); /* 文本颜色 */
-  transition: opacity 0.3s ease, visibility 0.3s ease, color 0.5s ease; /* 透明度、可见性和颜色过渡效果 */
+  transition:
+    opacity 0.3s ease,
+    visibility 0.3s ease,
+    color 0.5s ease; /* 透明度、可见性和颜色过渡效果 */
 }
 
 .book-description.active {
@@ -876,5 +929,4 @@ body {
   transform: translateY(0); /* 从100%改为0，默认显示文本 */
   opacity: 1; /* 从0改为1，默认显示文本 */
 }
-
 </style>
