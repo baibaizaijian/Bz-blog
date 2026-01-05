@@ -1,7 +1,7 @@
 <template>
   <div class="eatwhat-container">
     <!-- 头部导航 -->
-    <header class="header" :class="{ 'is-scrolled': isScrolled }">
+    <header class="header">
       <div class="header-inner">
         <div class="logo">
           <span class="icon-logo">🍽️</span>
@@ -77,7 +77,7 @@
       </section>
 
       <!-- 主操作按钮 -->
-      <div class="cta-section" style="text-align: center; margin-bottom: 2rem">
+      <div class="cta-section">
         <button
           class="btn btn-primary btn-large"
           type="button"
@@ -90,13 +90,7 @@
       <!-- 历史记录 -->
       <section class="history-section">
         <h3 class="section-title">🕒 历史推荐</h3>
-        <div
-          v-if="history.length === 0"
-          class="empty-text"
-          style="color: var(--color-text-muted); text-align: center"
-        >
-          暂无历史记录
-        </div>
+        <div v-if="history.length === 0" class="empty-text">暂无历史记录</div>
         <div v-else class="history-grid">
           <button
             v-for="(food, index) in history"
@@ -130,11 +124,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <div
-            v-if="favorites.length === 0"
-            class="empty-text"
-            style="text-align: center; color: var(--color-text-muted)"
-          >
+          <div v-if="favorites.length === 0" class="empty-text">
             暂无收藏的食物
           </div>
           <div v-else class="fav-list">
@@ -159,7 +149,7 @@
     <!-- 提示消息 -->
     <div v-if="toastMessage" class="toast">{{ toastMessage }}</div>
 
-    <footer class="footer">© 2025 今天吃什么升级版</footer>
+    <footer class="footer">© 2026 今天吃什么</footer>
   </div>
 </template>
 
@@ -284,8 +274,9 @@ onMounted(() => {
   if (savedHistory) {
     try {
       history.value = JSON.parse(savedHistory) as FoodItem[]
-    } catch (e) {
-      console.error('Failed to parse history', e)
+    } catch {
+      history.value = []
+      localStorage.removeItem('foodHistory')
     }
   }
 
@@ -294,9 +285,9 @@ onMounted(() => {
   if (savedFavorites) {
     try {
       favorites.value = JSON.parse(savedFavorites) as FoodItem[]
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error('Failed to parse favorites', e)
+    } catch {
+      favorites.value = []
+      localStorage.removeItem('foodFavorites')
     }
   }
 

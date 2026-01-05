@@ -2,16 +2,24 @@
   --ew-primary: #ff6b35;
   --ew-primary-hover: #f06532;
   --ew-primary-soft: rgba(255, 107, 53, 0.1);
+  --ew-primary-shadow: rgba(255, 107, 53, 0.3);
+  --ew-primary-shadow-hover: rgba(255, 107, 53, 0.4);
   --ew-bg: #f5f5f7;
   --ew-surface: #ffffff;
+  --ew-surface-2: #f0f2f5;
+  --ew-surface-hover: #e8eaee;
   --ew-text-main: #1d1d1f;
   --ew-text-muted: #86868b;
   --ew-border: #e5e5e5;
   --ew-danger: #ef4444;
+  --ew-header-bg: rgba(255, 255, 255, 0.8);
+  --ew-header-bg-scrolled: rgba(255, 255, 255, 0.95);
 
   --ew-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --ew-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --ew-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --ew-shadow-md:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --ew-shadow-lg:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   --ew-shadow-hover: 0 12px 24px -6px rgba(0, 0, 0, 0.12);
 
   --ew-radius-sm: 8px;
@@ -24,26 +32,51 @@
   min-height: 100vh;
   background-color: var(--ew-bg);
   color: var(--ew-text-main);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial,
+    sans-serif;
   line-height: 1.5;
+}
+
+html.dark .eatwhat-container,
+body.dark .eatwhat-container,
+.dark-mode .eatwhat-container {
+  --ew-primary: #38bdf8;
+  --ew-primary-hover: #0ea5e9;
+  --ew-primary-soft: rgba(56, 189, 248, 0.14);
+  --ew-primary-shadow: rgba(56, 189, 248, 0.26);
+  --ew-primary-shadow-hover: rgba(56, 189, 248, 0.34);
+  --ew-bg: #0b0d10;
+  --ew-surface: #12161b;
+  --ew-surface-2: #1a2027;
+  --ew-surface-hover: #232b35;
+  --ew-text-main: #e7eaf0;
+  --ew-text-muted: #a0a7b4;
+  --ew-border: rgba(255, 255, 255, 0.12);
+  --ew-danger: #f87171;
+  --ew-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --ew-shadow-md: 0 10px 20px rgba(0, 0, 0, 0.32);
+  --ew-shadow-lg: 0 18px 40px rgba(0, 0, 0, 0.38);
+  --ew-shadow-hover: 0 22px 50px rgba(0, 0, 0, 0.42);
+  --ew-header-bg: rgba(18, 22, 27, 0.72);
+  --ew-header-bg-scrolled: rgba(18, 22, 27, 0.92);
 }
 
 /* Header */
 .header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(255, 255, 255, 0.8);
+  background: var(--ew-header-bg);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--ew-border);
-  transition: padding 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    padding 0.3s ease,
+    box-shadow 0.3s ease;
   padding: 1rem 0;
 }
 
 .header.is-scrolled {
   padding: 0.75rem 0;
   box-shadow: var(--ew-shadow-sm);
-  background: rgba(255, 255, 255, 0.95);
+  background: var(--ew-header-bg-scrolled);
 }
 
 .header-inner {
@@ -144,7 +177,7 @@
   background: var(--ew-primary);
   color: white;
   border-color: var(--ew-primary);
-  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+  box-shadow: 0 4px 12px var(--ew-primary-shadow);
 }
 
 /* Result Card */
@@ -160,7 +193,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(0, 0, 0, 0.02);
+  border: 1px solid var(--ew-border);
   transition: transform 0.3s ease;
 }
 
@@ -181,7 +214,7 @@
 .food-badge {
   display: inline-block;
   padding: 0.25rem 0.75rem;
-  background: var(--ew-bg);
+  background: var(--ew-surface-2);
   color: var(--ew-text-muted);
   font-size: 0.75rem;
   font-weight: 600;
@@ -230,13 +263,13 @@
 .btn-primary {
   background: var(--ew-primary);
   color: white;
-  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+  box-shadow: 0 4px 12px var(--ew-primary-shadow);
 }
 
 .btn-primary:hover {
   background: var(--ew-primary-hover);
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(255, 107, 53, 0.4);
+  box-shadow: 0 6px 16px var(--ew-primary-shadow-hover);
 }
 
 .btn-primary:active {
@@ -244,7 +277,7 @@
 }
 
 .btn-secondary {
-  background: white;
+  background: var(--ew-surface);
   color: var(--ew-text-main);
   border: 1px solid var(--ew-border);
 }
@@ -306,6 +339,18 @@
 .history-cat {
   font-size: 0.75rem;
   color: var(--ew-text-muted);
+}
+
+.cta-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.empty-text {
+  text-align: center;
+  color: var(--ew-text-muted);
+  padding: 0.75rem 0;
 }
 
 /* Modal */
@@ -377,13 +422,13 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.75rem 1rem;
-  background: var(--ew-bg);
+  background: var(--ew-surface-2);
   border-radius: var(--ew-radius-md);
   transition: var(--ew-transition-base);
 }
 
 .fav-item:hover {
-  background: #eaeaea;
+  background: var(--ew-surface-hover);
 }
 
 .fav-info h4 {
@@ -395,9 +440,10 @@
 .fav-info span {
   font-size: 0.75rem;
   color: var(--ew-text-muted);
-  background: white;
+  background: var(--ew-surface);
   padding: 0.1rem 0.5rem;
   border-radius: var(--ew-radius-full);
+  border: 1px solid var(--ew-border);
 }
 
 .btn-remove {
@@ -434,18 +480,34 @@
 
 /* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideUp {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 @keyframes slideUpFade {
-  from { transform: translate(-50%, 20px); opacity: 0; }
-  to { transform: translate(-50%, 0); opacity: 1; }
+  from {
+    transform: translate(-50%, 20px);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
 }
 
 /* Footer */
@@ -455,5 +517,5 @@
   color: var(--ew-text-muted);
   font-size: 0.85rem;
   border-top: 1px solid var(--ew-border);
-  background: white;
+  background: var(--ew-surface);
 }
