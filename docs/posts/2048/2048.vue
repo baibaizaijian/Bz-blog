@@ -2,11 +2,38 @@
   <div id="game">
     <div class="header">
       <div class="score">分数: {{ score.value }}</div>
-      <button class="reset-btn" @click="resetGame">重新开始</button>
+      <div class="controls">
+        <div class="modes" role="tablist" aria-label="棋盘模式">
+          <button
+            class="mode-btn"
+            type="button"
+            :class="{ active: gridSize === 4 }"
+            role="tab"
+            :aria-selected="gridSize === 4"
+            @click="setGridSize(4)"
+          >
+            4×4
+          </button>
+          <button
+            class="mode-btn"
+            type="button"
+            :class="{ active: gridSize === 5 }"
+            role="tab"
+            :aria-selected="gridSize === 5"
+            @click="setGridSize(5)"
+          >
+            5×5
+          </button>
+        </div>
+        <button class="reset-btn" type="button" @click="resetGame">
+          重新开始
+        </button>
+      </div>
     </div>
     <div v-if="toastVisible" class="toast">{{ toastText }}</div>
     <div
       class="board"
+      :style="boardStyle"
       @touchstart="handleTouchStart"
       @touchmove="handleTouchMove"
       @touchend="handleTouchEnd"
@@ -29,16 +56,19 @@
 </template>
 
 <script setup>
-import { onMounted, onUnmounted, reactive, ref } from 'vue'
+import { computed, onMounted, onUnmounted, reactive, ref } from 'vue'
 
 defineOptions({ name: 'Game2048Board' })
 
-/** 生成4*4 二维数组，初始值都为0 */
-const board = reactive(
-  Array(5)
+const gridSize = ref(5)
+
+function createBoard(size) {
+  return Array(size)
     .fill(0)
-    .map(() => Array(5).fill(0))
-)
+    .map(() => Array(size).fill(0))
+}
+
+const board = ref(createBoard(gridSize.value))
 /** 游戏分数，使用reactive包装便于修改 */
 const score = reactive({ value: 0 })
 /** 记录已合并的单元格位置，用于添加合并动画 */
@@ -52,6 +82,11 @@ const touchEndY = ref(0)
 
 const toastVisible = ref(false)
 const toastText = ref('')
+
+const boardStyle = computed(() => ({
+  '--grid-size': gridSize.value,
+  '--cell-size': gridSize.value === 4 ? '92px' : '80px',
+}))
 
 function showToast(text) {
   toastText.value = text
@@ -67,28 +102,29 @@ function showToast(text) {
  */
 function addNumber() {
   const empty = []
-  board.forEach((row, r) =>
+  board.value.forEach((row, r) =>
     row.forEach((cell, c) => {
       if (cell === 0) empty.push([r, c])
     })
   )
   if (!empty.length) return
   const [r, c] = empty[Math.floor(Math.random() * empty.length)]
-  board[r][c] = Math.random() < 0.8 ? 2 : 4
+  board.value[r][c] = Math.random() < 0.8 ? 2 : 4
 }
 
 function checkWin() {
-  return board.flat().includes(2048)
+  return board.value.flat().includes(2048)
 }
 
 function checkGameOver() {
-  if (board.flat().includes(0)) return false
+  const size = gridSize.value
+  if (board.value.flat().includes(0)) return false
 
-  for (let r = 0; r < 5; r += 1) {
-    for (let c = 0; c < 5; c += 1) {
-      const val = board[r][c]
-      if (c < 4 && board[r][c + 1] === val) return false
-      if (r < 4 && board[r + 1][c] === val) return false
+  for (let r = 0; r < size; r += 1) {
+    for (let c = 0; c < size; c += 1) {
+      const val = board.value[r][c]
+      if (c < size - 1 && board.value[r][c + 1] === val) return false
+      if (r < size - 1 && board.value[r + 1][c] === val) return false
     }
   }
 
@@ -100,12 +136,10 @@ function checkGameOver() {
  * 清空棋盘、重置分数、添加初始数字、清空合并状态
  */
 function resetGame() {
+  const size = gridSize.value
+  toastVisible.value = false
   // 清空棋盘
-  for (let r = 0; r < 5; r += 1) {
-    for (let c = 0; c < 5; c += 1) {
-      board[r][c] = 0
-    }
-  }
+  board.value = createBoard(size)
   // 重置分数
   score.value = 0
   // 添加初始数字（两个）
@@ -121,9 +155,10 @@ function resetGame() {
  * @returns {Object} - 处理后的行和是否发生了合并
  */
 function slideAndMerge(row) {
+  const size = gridSize.value
   // 确保输入是数组
   if (!Array.isArray(row)) {
-    return { row: [0, 0, 0, 0, 0], merged: false }
+    return { row: Array(size).fill(0), merged: false }
   }
 
   // 过滤掉0，将所有非0数字靠左排列
@@ -144,7 +179,7 @@ function slideAndMerge(row) {
   arr = arr.filter(v => v !== 0)
 
   // 在数组末尾补充0，确保长度为4
-  while (arr.length < 5) arr.push(0)
+  while (arr.length < size) arr.push(0)
 
   return { row: arr, merged }
 }
@@ -164,9 +199,10 @@ function rotate(matrix) {
  * @returns {boolean} - 是否发生了移动
  */
 function move(direction) {
+  const size = gridSize.value
   let moved = false
   // 复制棋盘，避免直接修改原始数据
-  let b = board.map(row => [...row])
+  let b = board.value.map(row => [...row])
   // 清空之前的合并状态
   Object.keys(mergedCells).forEach(key => delete mergedCells[key])
 
@@ -198,7 +234,7 @@ function move(direction) {
         if (result.merged) {
           // 记录合并的单元格位置，注意坐标转换
           result.row.forEach((val, j) => {
-            if (val > 0) mergedCells[`${4 - j}-${i}`] = true
+            if (val > 0) mergedCells[`${size - 1 - j}-${i}`] = true
           })
         }
         return result.row.reverse() // 反转回来
@@ -229,7 +265,7 @@ function move(direction) {
         if (result.merged) {
           // 记录合并的单元格位置，注意坐标转换
           result.row.forEach((val, j) => {
-            if (val > 0) mergedCells[`${i}-${4 - j}`] = true
+            if (val > 0) mergedCells[`${i}-${size - 1 - j}`] = true
           })
         }
         return result.row.reverse() // 反转回来
@@ -240,13 +276,19 @@ function move(direction) {
   }
 
   // 检查是否有移动发生
-  for (let r = 0; r < 5; r += 1) {
-    for (let c = 0; c < 5; c += 1) {
-      if (b[r][c] !== board[r][c]) moved = true
-      board[r][c] = b[r][c] // 更新棋盘
+  for (let r = 0; r < size; r += 1) {
+    for (let c = 0; c < size; c += 1) {
+      if (b[r][c] !== board.value[r][c]) moved = true
+      board.value[r][c] = b[r][c] // 更新棋盘
     }
   }
   return moved
+}
+
+function setGridSize(size) {
+  if (gridSize.value === size) return
+  gridSize.value = size
+  resetGame()
 }
 
 /**
@@ -347,8 +389,7 @@ function handleTouchEnd(e) {
 
 // 组件挂载时初始化游戏
 onMounted(() => {
-  addNumber() // 添加两个初始数字
-  addNumber()
+  resetGame()
   window.addEventListener('keydown', handleKey) // 添加键盘事件监听
 })
 
@@ -371,12 +412,50 @@ onUnmounted(() => {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+  gap: 12px;
 }
 
 .score {
   font-size: 24px;
   font-weight: bold;
   color: #776e65;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.modes {
+  display: inline-flex;
+  border-radius: 10px;
+  background: rgba(187, 173, 160, 0.25);
+  padding: 4px;
+  gap: 4px;
+}
+
+.mode-btn {
+  padding: 8px 10px;
+  font-size: 14px;
+  background: transparent;
+  color: #776e65;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 700;
+}
+
+.mode-btn.active {
+  background: #8f7a66;
+  color: #f9f6f2;
+}
+
+.mode-btn:hover {
+  transform: translateY(-1px);
 }
 
 .reset-btn {
@@ -409,14 +488,25 @@ onUnmounted(() => {
 }
 
 .board {
+  --grid-size: 5;
+  --gap: 10px;
+  --padding: 10px;
+  --cell-size: 80px;
   display: grid;
-  grid-template-rows: repeat(5, 1fr); /* 修改为5行 */
-  gap: 10px;
+  grid-template-rows: repeat(var(--grid-size), var(--cell-size));
+  gap: var(--gap);
   background: #bbada0;
-  padding: 10px;
+  padding: var(--padding);
   border-radius: 10px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  width: 460px; /* 调整为适合5×5棋盘的宽度 */
+  width: min(
+    100%,
+    calc(
+      var(--grid-size) * var(--cell-size) + (var(--grid-size) - 1) *
+        var(--gap) + 2 * var(--padding)
+    )
+  );
+  margin: 0 auto;
   box-sizing: border-box; /* 确保padding不会增加总宽度 */
   touch-action: none; /* 防止触摸事件引起页面滚动 */
   user-select: none; /* 防止文本选择 */
@@ -424,13 +514,14 @@ onUnmounted(() => {
 
 .row {
   display: grid;
-  grid-template-columns: repeat(5, 1fr); /* 修改为5列 */
-  gap: 10px;
+  grid-template-columns: repeat(var(--grid-size), var(--cell-size));
+  gap: var(--gap);
+  justify-content: center;
 }
 
 .cell {
-  width: 80px; /* 调整单元格宽度 */
-  height: 80px; /* 调整单元格高度 */
+  width: var(--cell-size);
+  height: var(--cell-size);
   border-radius: 8px;
   background: #ccc0b3;
   position: relative;
@@ -546,14 +637,19 @@ onUnmounted(() => {
   }
 
   .board {
-    width: 100%;
-    max-width: 380px;
-  }
-
-  .cell {
-    width: 100%;
-    height: 0;
-    padding-bottom: 100%; /* 保持正方形 */
+    --gap: 8px;
+    --padding: 8px;
+    --cell-size: clamp(
+      46px,
+      calc(
+        (
+            100vw - 30px - 2 * var(--padding) - (var(--grid-size) - 1) *
+              var(--gap)
+          ) /
+          var(--grid-size)
+      ),
+      76px
+    );
   }
 
   .header {
